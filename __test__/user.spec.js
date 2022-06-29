@@ -119,7 +119,7 @@ describe("user", () => {
             .expect(200)
     })
 
-    it.only("Route DELETE /user/:id error : userId is wrong", async () => {
+    it("Route DELETE /user/:id error : userId is wrong", async () => {
         const res = await request(app)
             .delete("/user/" + userIdWrongDelete)
             .expect(500)
