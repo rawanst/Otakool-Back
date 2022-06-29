@@ -39,3 +39,18 @@ exports.create = (req, res) => {
     });
 };
 
+exports.findOne = (req, res) => {
+  const id = req.params.id;
+  Avis.findById(id)
+    .then(data => {
+      if (!data)
+        res.status(404).send({ message: "Pas d'avis trouvé avec l'identifiant " + id });
+      else res.send(data);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .send({ message: "Erreur lors de la recherche de l'avis avec l'identifiant " + id });
+    });
+};
+

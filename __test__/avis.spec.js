@@ -3,6 +3,9 @@ const request = require("supertest");
 const app = require("../app");
 const db = require("../models");
 
+const avisId = process.env.AVIS_ID_TEST;
+const avisIsWrong = 0;
+
 describe("avis", () => {
     beforeEach(()=>{
         db.mongoose
@@ -60,4 +63,18 @@ describe("avis", () => {
         // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
     })
     
+    it("GET /avis/:id", async () => {
+        const res = await request(app)
+            .get("/avis/"+ avisId)
+            .expect(200)
+            .expect("content-type", /json/);
+    })
+
+    it("GET /avis/:id error: mettre un id innexistant", async () => {
+        const res = await request(app)
+            .get("/avis/" + avisIsWrong)
+            .expect(500)
+            .expect("content-type", /json/);
+    })
+
 });
