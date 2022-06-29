@@ -77,4 +77,36 @@ describe("avis", () => {
             .expect("content-type", /json/);
     })
 
+    it("PUT /avis/:id", async () => {
+        let insertion = {
+            "user": "62bc4d73039bbf0bc32edd47",
+            "anime": 2,
+            "note": 3,
+            "commentaire": "test test test jest"
+        }
+
+        const res = await request(app)
+            .put("/avis/"+ avisId)
+            .send(insertion)
+            .expect(200)
+            .expect("content-type", /json/);
+        
+        // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
+    })
+
+    it("PUT /avis/:id error: manque la note dans le body", async () => {
+        let insertion = {
+            "user": "62bc4d73039bbf0bc32edd47",
+            "anime": 2,
+            "commentaire": "test test test jest"
+        }
+
+        const res = await request(app)
+            .put("/avis/"+ avisId)
+            .send(insertion)
+            .expect(400)
+            .expect("content-type", /json/);
+        
+        // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
+    })
 });

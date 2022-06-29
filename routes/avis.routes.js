@@ -5,5 +5,6 @@ module.exports = app => {
     router.get("/", avis.findAll);
     router.get("/:id", avis.findOne);
     router.post("/", avis.create);
+    router.put("/:id", avis.update);
     app.use('/avis', router);
   };

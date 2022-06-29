@@ -54,3 +54,24 @@ exports.findOne = (req, res) => {
     });
 };
 
+exports.update = (req, res) => {
+  if (!req.body.user || !req.body.anime || !req.body.note || !req.body.commentaire) {
+    return res.status(400).send({
+      message: "Les données à mettre à jour ne peuvent pas être vide"
+    });
+  }
+  const id = req.params.id;
+  Avis.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Impossible de mettre à jour l'avis avec id=${id}. Peut être que l'avis n'a pas été trouvé!`
+        });
+      } else res.send({ message: "L'avis a bien été mise à jour" });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Erreur lors de la mise à jour de l'avis avec id=" + id
+      });
+    });
+};
