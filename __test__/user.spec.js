@@ -77,5 +77,39 @@ describe("user", () => {
             .expect("content-type", /json/);
     })
 
+    it("Route PUT /user/:id", async () => {
+        let insertion = {
+            pseudo: "rawan changement",
+            email: "rawan@gmail.com",
+            password: "rawan",
+            is_moderateur: true
+        }
+
+        const res = await request(app)
+            .put("/user/"+ userId)
+            .send(insertion)
+            .expect(200)
+            .expect("content-type", /json/);
+        
+        // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
+    })
+
+    it("Route PUT /user/:id error : email is empty", async () => {
+        let insertion = {
+            pseudo: "rawan changement",
+            email: "",
+            password: "rawan",
+            is_moderateur: true
+        }
+
+        const res = await request(app)
+            .put("/user/"+ userId)
+            .send(insertion)
+            .expect(400)
+            .expect("content-type", /json/);
+        
+        // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
+    })
+
 
 });
