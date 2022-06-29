@@ -75,3 +75,24 @@ exports.update = (req, res) => {
       });
     });
 };
+
+exports.delete = (req, res) => {
+  const id = req.params.id;
+  Avis.findByIdAndRemove(id)
+    .then(data => {
+      if (!data) {
+        res.status(404).send({
+          message: `Impossible de supprimer l'avis avec id=${id}. Peut-être que cet avis n'a pas été trouvé!`
+        });
+      } else {
+        res.send({
+          message: "L'avis a a bien été supprimer !"
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Impossible de supprimer l'avis avec id=" + id
+      });
+    });
+};

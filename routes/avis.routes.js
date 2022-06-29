@@ -6,5 +6,6 @@ module.exports = app => {
     router.get("/:id", avis.findOne);
     router.post("/", avis.create);
     router.put("/:id", avis.update);
+    router.delete("/:id", avis.delete);
     app.use('/avis', router);
   };

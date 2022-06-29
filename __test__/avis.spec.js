@@ -109,4 +109,21 @@ describe("avis", () => {
         
         // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
     })
+
+    it("DELETE /avis/:id ", async () => {
+        const res = await request(app)
+            .delete("/avis/"+ avisId)
+            .expect(200)
+            .expect("content-type", /json/);
+        
+        // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
+    })
+
+    it("DELETE /avis/:id error: id avis innexistant", async () => {
+        const res = await request(app)
+            .delete("/avis/"+ avisIsWrong)
+            .expect(500)
+            .expect("content-type", /json/);
+    })
+
 });
