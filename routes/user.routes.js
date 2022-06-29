@@ -8,8 +8,10 @@ module.exports = app => {
     router.post("/", user.create);
     // Retrieve a single USER with id
     router.get("/:id", user.findOne);
-    // Update a Tutorial with id
+    // Update a USER with id
     router.put("/:id", user.update);
+    // Delete a USER with id
+    router.delete("/:id", user.delete);
 
     app.use('/user', router);
   };

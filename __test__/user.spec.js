@@ -5,6 +5,8 @@ const db = require("../models");
 
 const userId = process.env.USER_ID_TEST;
 const userIdWrong = process.env.USER_ID_WRONG_TEST;
+const userIdWrongDelete = process.env.USER_ID_WRONG_DELETE_TEST;
+const userIdDelete = process.env.USER_ID_DELETE_TEST
 
 describe("user", () => {
     beforeEach(()=>{
@@ -109,6 +111,18 @@ describe("user", () => {
             .expect("content-type", /json/);
         
         // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
+    })
+
+    it("Route DELETE /user/:id", async () => {
+        const res = await request(app)
+            .delete("/user/" + userIdDelete)
+            .expect(200)
+    })
+
+    it.only("Route DELETE /user/:id error : userId is wrong", async () => {
+        const res = await request(app)
+            .delete("/user/" + userIdWrongDelete)
+            .expect(500)
     })
 
 
