@@ -17,9 +17,13 @@
   },
   "homepage": "https://github.com/rawanst/Otakool-Back#readme",
   "dependencies": {
+    "body-parser": "^1.20.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "mongoose": "^6.4.1"
+    "jest": "^28.1.1",
+    "mocha": "^10.0.0",
+    "mongoose": "^6.4.1",
+    "supertest": "^6.2.3"
   }
 }
