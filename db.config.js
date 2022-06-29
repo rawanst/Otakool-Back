@@ -1,3 +1,3 @@
 module.exports = {
-    url: "mongodb+srv://"+ process.env.MONGO_DB_USER +":"+ process.env.MONGO_DB_PASSWORD +"@"+ process.env.MONGO_DB_NAME +".mongodb.net/?retryWrites=true&w=majority"
+    url: "mongodb://sapey:sapey@ac-znr7kic-shard-00-00.0joiik5.mongodb.net:27017,ac-znr7kic-shard-00-01.0joiik5.mongodb.net:27017,ac-znr7kic-shard-00-02.0joiik5.mongodb.net:27017/?ssl=true&replicaSet=atlas-twwr3j-shard-0&authSource=admin&retryWrites=true&w=majority"
   };
