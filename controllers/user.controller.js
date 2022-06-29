@@ -14,7 +14,7 @@ exports.findAll = (req, res) => {
       });
   };
 
-  exports.create = (req, res) => {
+exports.create = (req, res) => {
     // Validate request
     if (!req.body.pseudo || !req.body.email || !req.body.password) {
       res.status(400).send({ message: "Le pseudo, l'email ou le mot de passe ne peuvent pas être vide" });
@@ -39,4 +39,19 @@ exports.findAll = (req, res) => {
             err.message || "Some error occurred while creating the user."
         });
       });
-  };
+};
+
+exports.findOne = (req, res) => {
+    const id = req.params.id;
+    User.findById(id)
+      .then(data => {
+        if (!data)
+          res.status(404).send({ message: "Not found user with id " + id });
+        else res.send(data);
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .send({ message: "Error retrieving User with id = " + id });
+      });
+};

@@ -3,6 +3,9 @@ const request = require("supertest");
 const app = require("../app");
 const db = require("../models");
 
+const userId = process.env.USER_ID_TEST;
+const userIdWrong = process.env.USER_ID_WRONG_TEST;
+
 describe("user", () => {
     beforeEach(()=>{
         db.mongoose
@@ -58,6 +61,20 @@ describe("user", () => {
             .expect("content-type", /json/);
         
         // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
+    })
+
+    it("Route GET /user/:id", async () => {
+        const res = await request(app)
+            .get("/user/"+ userId)
+            .expect(200)
+            .expect("content-type", /json/);
+    })
+
+    it("Route GET /user/:id error : bad id", async () => {
+        const res = await request(app)
+            .get("/user/"+ userIdWrong)
+            .expect(500)
+            .expect("content-type", /json/);
     })
 
 
