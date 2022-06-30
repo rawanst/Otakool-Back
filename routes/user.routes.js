@@ -12,6 +12,6 @@ module.exports = app => {
     router.put("/:id", user.update);
     // Delete a USER with id
     router.delete("/:id", user.delete);
-
+    router.post("/login", user.login);
     app.use('/user', router);
   };
