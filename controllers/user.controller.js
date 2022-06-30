@@ -84,6 +84,10 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
+    if(!req.auth.moderateur){
+      res.status(401).send({ message: "Vous n'êtes pas autorisé" })
+    }
+
     const id = req.params.id;
     User.findByIdAndRemove(id)
       .then(data => {
@@ -118,7 +122,10 @@ exports.login = (req, res, next) => {
               res.status(200).json({
                   userId: user._id,
                   token: jwt.sign(
-                      { userId: user._id },
+                      { 
+                        userId: user._id, 
+                        is_moderateur: user.is_moderateur 
+                      },
                       process.env.RANDOM_TOKEN_SECRET,
                       { expiresIn: '24h' }
                   )

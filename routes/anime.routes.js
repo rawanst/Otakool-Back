@@ -2,6 +2,7 @@ module.exports = app => {
     const anime = require("../controllers/anime.controller.js");
     var router = require("express").Router();
     const auth = require('../middleware/auth');
+    const modo = require('../middleware/moderateur');
 
     // Retrieve all Tutorials
     router.get("/", auth, anime.findAll);

@@ -15,6 +15,10 @@ exports.findAll = (req, res) => {
 };
 
 exports.create = (req, res) => {
+    if(!req.auth.moderateur){
+      res.status(401).send({ message: "Vous n'êtes pas autorisé" })
+    }
+
     // Validate request
     if (!req.body.title || !req.body.synopsis || !req.body.status || !req.body.type) {
       res.status(400).send({ message: "Le titre, synopsis, status ou le type ne peuvent pas être vide" });
@@ -66,6 +70,10 @@ exports.findOne = (req, res) => {
 };
 
 exports.update = (req, res) => {
+    if(!req.auth.moderateur){
+      res.status(401).send({ message: "Vous n'êtes pas autorisé" })
+    }
+
     if (!req.body.title || !req.body.synopsis || !req.body.status || !req.body.type) {
       return res.status(400).send({
         message: "Data to update can not be empty!"
@@ -88,6 +96,10 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
+    if(!req.auth.moderateur){
+      res.status(401).send({ message: "Vous n'êtes pas autorisé" })
+    }
+
     const id = req.params.id;
     Anime.findByIdAndRemove(id)
       .then(data => {
