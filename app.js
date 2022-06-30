@@ -42,5 +42,6 @@ db.mongoose
 
 require("./routes/user.routes")(app);
 require("./routes/avis.routes")(app);
+require("./routes/anime.routes")(app);
 
 module.exports = app;
