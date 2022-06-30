@@ -3,10 +3,12 @@ const request = require("supertest");
 const app = require("../app");
 const db = require("../models");
 
-const userId = process.env.USER_ID_TEST;
+const userIdGET = process.env.USER_ID_GET_TEST;
+const userIdPUT = process.env.USER_ID_PUT_TEST;
 const userIdWrong = process.env.USER_ID_WRONG_TEST;
 const userIdWrongDelete = process.env.USER_ID_WRONG_DELETE_TEST;
-const userIdDelete = process.env.USER_ID_DELETE_TEST
+const userIdDelete = process.env.USER_ID_DELETE_TEST;
+const BearerToken = process.env.TOKEN_BEARER;
 
 describe("user", () => {
     beforeEach(()=>{
@@ -22,6 +24,7 @@ describe("user", () => {
     it("Route GET /user", async () => {
         const res = await request(app)
             .get("/user")
+            .set('Authorization', `Bearer ${BearerToken}`)
             .expect(200)
             .expect("content-type", /json/);
     })
@@ -29,7 +32,15 @@ describe("user", () => {
     it("Route GET /user error", async () => {
         const res = await request(app)
             .get("/userError")
+            .set('Authorization', `Bearer ${BearerToken}`)
             .expect(404);
+    })
+
+    it("Route GET /user Error Unauthorized", async () => {
+        const res = await request(app)
+            .get("/user")
+            .expect(401)
+            .expect("content-type", /json/);
     })
 
     it("Route POST /user", async () => {
@@ -42,11 +53,10 @@ describe("user", () => {
 
         const res = await request(app)
             .post("/user")
+            .set('Authorization', `Bearer ${BearerToken}`)
             .send(insertion)
             .expect(200)
-            .expect("content-type", /json/);
-        
-        // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
+            .expect("content-type", /json/);        
     })
 
     it("Route POST /user error : delete password", async () => {
@@ -58,16 +68,16 @@ describe("user", () => {
 
         const res = await request(app)
             .post("/user")
+            .set('Authorization', `Bearer ${BearerToken}`)
             .send(insertion)
             .expect(400)
-            .expect("content-type", /json/);
-        
-        // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
+            .expect("content-type", /json/);        
     })
 
     it("Route GET /user/:id", async () => {
         const res = await request(app)
-            .get("/user/"+ userId)
+            .get("/user/"+ userIdGET)
+            .set('Authorization', `Bearer ${BearerToken}`)
             .expect(200)
             .expect("content-type", /json/);
     })
@@ -75,7 +85,15 @@ describe("user", () => {
     it("Route GET /user/:id error : bad id", async () => {
         const res = await request(app)
             .get("/user/"+ userIdWrong)
+            .set('Authorization', `Bearer ${BearerToken}`)
             .expect(500)
+            .expect("content-type", /json/);
+    })
+
+    it("Route GET /user/:id Error unauthorized", async () => {
+        const res = await request(app)
+            .get("/user/"+ userIdGET)
+            .expect(401)
             .expect("content-type", /json/);
     })
 
@@ -88,12 +106,11 @@ describe("user", () => {
         }
 
         const res = await request(app)
-            .put("/user/"+ userId)
+            .put("/user/"+ userIdPUT)
+            .set('Authorization', `Bearer ${BearerToken}`)
             .send(insertion)
             .expect(200)
-            .expect("content-type", /json/);
-        
-        // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
+            .expect("content-type", /json/);        
     })
 
     it("Route PUT /user/:id error : email is empty", async () => {
@@ -105,7 +122,8 @@ describe("user", () => {
         }
 
         const res = await request(app)
-            .put("/user/"+ userId)
+            .put("/user/"+ userIdPUT)
+            .set('Authorization', `Bearer ${BearerToken}`)
             .send(insertion)
             .expect(400)
             .expect("content-type", /json/);
@@ -113,16 +131,39 @@ describe("user", () => {
         // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
     })
 
+    it("Route PUT /user/:id Error Unauthorized", async () => {
+        let insertion = {
+            pseudo: "rawan changement",
+            email: "rawan@gmail.com",
+            password: "rawan",
+            is_moderateur: true
+        }
+
+        const res = await request(app)
+            .put("/user/"+ userIdPUT)
+            .send(insertion)
+            .expect(401)
+            .expect("content-type", /json/);        
+    })
+
     it("Route DELETE /user/:id", async () => {
         const res = await request(app)
             .delete("/user/" + userIdDelete)
+            .set('Authorization', `Bearer ${BearerToken}`)
             .expect(200)
     })
 
     it("Route DELETE /user/:id error : userId is wrong", async () => {
         const res = await request(app)
             .delete("/user/" + userIdWrongDelete)
+            .set('Authorization', `Bearer ${BearerToken}`)
             .expect(500)
+    })
+
+    it("Route DELETE /user/:id Error Unauthorized", async () => {
+        const res = await request(app)
+            .delete("/user/" + userIdDelete)
+            .expect(401)
     })
 
 
