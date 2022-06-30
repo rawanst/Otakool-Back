@@ -1,6 +1,5 @@
 const dbConfig = require("../db.config.js");
 const mongoose = require("mongoose");
-const { getMaxListeners } = require("superagent");
 mongoose.Promise = global.Promise;
 const db = {};
 db.mongoose = mongoose;
@@ -8,36 +7,6 @@ db.url = dbConfig.url;
 db.users = require("./user.model.js")(mongoose);
 db.avis = require("./avis.model.js")(mongoose);
 db.anime = require("./anime.model.js")(mongoose);
-
-// Création de users lors du lancement du projet
-db.users.create({
-    pseudo: "sapey",
-    email: "sapey@gmail.com",
-    password: "sapey",
-    is_moderateur: true
-});
-
-db.users.create({
-    pseudo: "rawan",
-    email: "rawan@gmail.com",
-    password: "rawan",
-    is_moderateur: true
-});
-
-db.users.create({
-    pseudo: "omar",
-    email: "omar@gmail.com",
-    password: "omar",
-    is_moderateur: false
-});
-
-db.users.create({
-    pseudo: "vincent",
-    email: "vincent@gmail.com",
-    password: "vincent",
-    is_moderateur: false
-});
-
 
 // Création d'animé lors du lancement du projet
 db.anime.create({
