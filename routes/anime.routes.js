@@ -5,7 +5,7 @@ module.exports = app => {
 
     // Retrieve all Tutorials
     router.get("/", anime.findAll);
-    router.get("/:id", auth, anime.findOne);
+    router.get("/:id", anime.findOne);
     router.post("/", auth, anime.create);
     router.put("/:id", auth, anime.update);
     router.delete("/:id", auth, anime.delete);
