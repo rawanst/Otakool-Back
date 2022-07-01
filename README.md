@@ -25,3 +25,15 @@
     PUT -> modifier l'avis
     
     DELETE -> supprimer l'avis
+    
+### /anime
+    GET -> afficher tout les animes
+    
+    POST => créer un anime
+  
+### /anime/:id
+    GET -> afficher l'anime
+    
+    PUT -> modifier l'anime
+    
+    DELETE -> supprimer l'anime
