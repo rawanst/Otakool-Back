@@ -4,7 +4,7 @@ module.exports = app => {
     const auth = require('../middleware/auth');
 
     // Retrieve all Tutorials
-    router.get("/", auth, anime.findAll);
+    router.get("/", anime.findAll);
     router.get("/:id", auth, anime.findOne);
     router.post("/", auth, anime.create);
     router.put("/:id", auth, anime.update);
