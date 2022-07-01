@@ -9,8 +9,11 @@ const userIdWrong = process.env.USER_ID_WRONG_TEST;
 const userIdWrongDelete = process.env.USER_ID_WRONG_DELETE_TEST;
 const userIdDelete = process.env.USER_ID_DELETE_TEST;
 const BearerToken = process.env.TOKEN_BEARER;
+const userIdNotFind = "aaaaaaaaaaaaaaaaaaaaaaaa";
 
 describe("user", () => {
+
+    //connection mongoose
     beforeEach(()=>{
         db.mongoose
         .connect(db.url, {
@@ -22,7 +25,7 @@ describe("user", () => {
     afterAll(() => db.mongoose.connection.close());
 
     it("Route GET /user", async () => {
-        const res = await request(app)
+        await request(app)
             .get("/user")
             .set('Authorization', `Bearer ${BearerToken}`)
             .expect(200)
@@ -59,6 +62,48 @@ describe("user", () => {
             .expect("content-type", /json/);        
     })
 
+    it("Route POST /user/login", async () => {
+        let insertion = {
+            email: "alexandre@gmail.com",
+            password: "alexandre",
+        }
+
+        const res = await request(app)
+            .post("/user/login")
+            .set('Authorization', `Bearer ${BearerToken}`)
+            .send(insertion)
+            .expect(200)
+            .expect("content-type", /json/);        
+    })
+
+    it("Route POST /user/login : error password", async () => {
+        let insertion = {
+            email: "alexandre@gmail.com",
+            password: "alexandreError",
+        }
+
+        const res = await request(app)
+            .post("/user/login")
+            .set('Authorization', `Bearer ${BearerToken}`)
+            .send(insertion)
+            .expect(401)
+            .expect("content-type", /json/);        
+    })
+
+    it("Route POST /user/login : error account isn't found", async () => {
+        let insertion = {
+            email: "alexandre@gmail.comError",
+            password: "alexandre",
+        }
+
+        const res = await request(app)
+            .post("/user/login")
+            .set('Authorization', `Bearer ${BearerToken}`)
+            .send(insertion)
+            .expect(401)
+            .expect("content-type", /json/);        
+    })
+
     it("Route POST /user error : delete password", async () => {
         let insertion = {
             pseudo: "rawan",
@@ -90,6 +135,14 @@ describe("user", () => {
             .expect("content-type", /json/);
     })
 
+    it("Route GET /user/:id error : not found user with id", async () => {
+        const res = await request(app)
+            .get("/user/"+ userIdNotFind)
+            .set('Authorization', `Bearer ${BearerToken}`)
+            .expect(404)
+            .expect("content-type", /json/);
+    })
+
     it("Route GET /user/:id Error unauthorized", async () => {
         const res = await request(app)
             .get("/user/"+ userIdGET)
@@ -113,7 +166,7 @@ describe("user", () => {
             .expect("content-type", /json/);        
     })
 
-    it("Route PUT /user/:id error : email is empty", async () => {
+    it("Route PUT /user/:id error : Data to update can not be empty", async () => {
         let insertion = {
             pseudo: "rawan changement",
             email: "",
@@ -126,6 +179,24 @@ describe("user", () => {
             .set('Authorization', `Bearer ${BearerToken}`)
             .send(insertion)
             .expect(400)
+            .expect("content-type", /json/);
+        
+        // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
+    })
+
+    it("Route PUT /user/:id error : Data to update can not be empty", async () => {
+        let insertion = {
+            pseudo: "rawan changement",
+            email: "test@email.com",
+            password: "rawan",
+            is_moderateur: true
+        }
+
+        const res = await request(app)
+            .put("/user/"+ userIdNotFind)
+            .set('Authorization', `Bearer ${BearerToken}`)
+            .send(insertion)
+            .expect(404)
             .expect("content-type", /json/);
         
         // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);

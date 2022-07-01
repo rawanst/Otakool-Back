@@ -1,7 +1,7 @@
-const { anime } = require("../models");
+//const { anime } = require("../models");
 const db = require("../models");
 const Avis = db.avis;
-const Anime = db.anime;
+//const Anime = db.anime;
 
 exports.findAll = (req, res) => {
     Avis.find()
@@ -39,21 +39,6 @@ exports.create = (req, res) => {
         message: err.message || "Une erreur est apparu lors de la création de votre avis"
       });
     });
-
-    const moyenne = this.MoyenneAvis(req.body.anime);
-    const anime = Anime.findById(req.body.anime);
-    anime.moyenneAvis = moyenne;
-    Anime.findByIdAndUpdate(req.body.anime, anime, { useFindAndModify: false })
-        .then(data => {
-            if (!data)
-              res.status(404).send({ message: "Pas d'avis trouvé avec l'identifiant " + id });
-            else res.send(data);
-          })
-          .catch(err => {
-            res
-              .status(500)
-              .send({ message: "Erreur lors de la recherche de l'avis avec l'identifiant " + id });
-          });
 };
 
 exports.findOne = (req, res) => {
@@ -113,18 +98,3 @@ exports.delete = (req, res) => {
       });
     });
 };
-
-exports.MoyenneAvis = (animeId) => {
-    Avis.find({anime : animeId})
-    .then(data => {
-        let moyenne;
-        let total;
-        data.forEach(i => {
-            moyenne += i.note;
-            total ++;
-        })
-        moyenne = moyenne / total;
-        return moyenne
-
-    })
-}
