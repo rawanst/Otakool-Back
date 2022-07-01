@@ -73,7 +73,7 @@ describe("avis", () => {
             .expect("content-type", /json/);
     })
 
-    it.only("POST /anime Error : ne pas avoir les droits du modo", async () => {
+    it("POST /anime Error : ne pas avoir les droits du modo", async () => {
         let insertion = {
             type: "anime",
             title: "Trigun 222",
