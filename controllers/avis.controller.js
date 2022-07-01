@@ -1,5 +1,7 @@
+//const { anime } = require("../models");
 const db = require("../models");
 const Avis = db.avis;
+//const Anime = db.anime;
 
 exports.findAll = (req, res) => {
     Avis.find()

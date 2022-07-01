@@ -8,8 +8,11 @@ const avisIdPUT = process.env.AVIS_ID_PUT_TEST;
 const avisIdDELETE = process.env.AVIS_ID_DELETE_TEST;
 const avisIsWrong = 0;
 const BearerToken = process.env.TOKEN_BEARER;
+const avisIdNotFind = "aaaaaaaaaaaaaaaaaaaaaaaa";
 
 describe("avis", () => {
+
+    //connection à mongoose
     beforeEach(()=>{
         db.mongoose
         .connect(db.url, {
@@ -54,9 +57,7 @@ describe("avis", () => {
             .set('Authorization', `Bearer ${BearerToken}`)
             .send(insertion)
             .expect(200)
-            .expect("content-type", /json/);
-        
-        // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
+            .expect("content-type", /json/);        
     })
 
     it("POST /avis error: manque le user id dans body", async () => {
@@ -71,9 +72,7 @@ describe("avis", () => {
             .set('Authorization', `Bearer ${BearerToken}`)
             .send(insertion)
             .expect(400)
-            .expect("content-type", /json/);
-        
-        // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
+            .expect("content-type", /json/);        
     })
 
     it("POST /avis Error Unauthorized", async () => {
@@ -127,9 +126,23 @@ describe("avis", () => {
             .set('Authorization', `Bearer ${BearerToken}`)
             .send(insertion)
             .expect(200)
+            .expect("content-type", /json/);        
+    })
+
+    it("PUT /avis/:id error: Mauvais ID de l'avis rentré dans l'url", async () => {
+        let insertion = {
+            "user": "62bc4d73039bbf0bc32edd47",
+            "anime": 2,
+            "note": 3,
+            "commentaire": "test test test jest"
+        }
+
+        const res = await request(app)
+            .put("/avis/"+ avisIdNotFind)
+            .set('Authorization', `Bearer ${BearerToken}`)
+            .send(insertion)
+            .expect(404)
             .expect("content-type", /json/);
-        
-        // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
     })
 
     it("PUT /avis/:id error: manque la note dans le body", async () => {
@@ -144,9 +157,7 @@ describe("avis", () => {
             .set('Authorization', `Bearer ${BearerToken}`)
             .send(insertion)
             .expect(400)
-            .expect("content-type", /json/);
-        
-        // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
+            .expect("content-type", /json/);        
     })
 
     it("PUT /avis/:id Error Unauthorized", async () => {
@@ -169,9 +180,7 @@ describe("avis", () => {
             .delete("/avis/"+ avisIdDELETE)
             .set('Authorization', `Bearer ${BearerToken}`)
             .expect(200)
-            .expect("content-type", /json/);
-        
-        // expect(request(app).get('/avis/'+id)).toMatchObject(insertion);
+            .expect("content-type", /json/);        
     })
 
     it("DELETE /avis/:id error: id avis innexistant", async () => {
